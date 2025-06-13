@@ -1,0 +1,6 @@
+<main>
+    <h1>Bem-vindo  ao Kanban!</h1>
+
+    <div> *ngIf="boards.length === 0; else boardList">
+        <p>Nenhum quadro encontrado. Por favor, cire um no backend primeiro!</p>
+        <p>Acesse `https://localshot:3000/board` (POST)</p>
