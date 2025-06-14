@@ -15,7 +15,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), // Extrai o JWT do cabeçalho Authorization
-      secretOrKey: 'SEGREDO_MUITO_SECRETO_E_FORTE', // <<--- MESMA CHAVE SECRETA DO AuthModule!
+      secretOrKey: 'LUVAS', // <<--- MESMA CHAVE SECRETA DO AuthModule!
     });
   }
 

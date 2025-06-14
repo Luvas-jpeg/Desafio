@@ -1,3 +1,14 @@
+<section class="create-board">
+    <h2>Criar Novo Quadro</h2>
+    <div class="form-group">
+        <input
+        type="text"
+        placeholder="Título do novo quadro"
+        [(ngModel)]="newBoardTitle"
+        (keyup.enter)="createBoard()"/>
+    </div>
+</section>
+
 <section>
     <h2>Meus Quadros:</h2>
     <div *ngIf="boards.length === 0; else boardList">

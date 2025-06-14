@@ -30,10 +30,7 @@ let AuthService = class AuthService {
         const { email, password } = authCredentialsDto;
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
-        const user = this.usersRepository.create({
-            email,
-            password: hashedPassword,
-        });
+        const user = this.usersRepository.create({ email, password: hashedPassword });
         try {
             await this.usersRepository.save(user);
         }
@@ -42,6 +39,7 @@ let AuthService = class AuthService {
                 throw new common_1.ConflictException('Email já cadastrado.');
             }
             else {
+                console.error('Erro inesperado ao cadastrar usuário (backend):', error);
                 throw new common_1.BadRequestException('Erro ao cadastrar usuário.');
             }
         }

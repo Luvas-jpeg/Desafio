@@ -16,6 +16,9 @@ const column_entity_1 = require("./entities/column.entity");
 const card_entity_1 = require("./entities/card.entity");
 const user_entity_1 = require("./entities/user.entity");
 const auth_module_1 = require("./auth/auth.module");
+const board_module_1 = require("./board/board.module");
+const column_module_1 = require("./column/column.module");
+const card_module_1 = require("./card/card.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -29,6 +32,9 @@ exports.AppModule = AppModule = __decorate([
                 synchronize: true,
             }),
             auth_module_1.AuthModule,
+            board_module_1.BoardModule,
+            column_module_1.ColumnModule,
+            card_module_1.CardModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

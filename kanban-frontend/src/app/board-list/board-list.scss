@@ -2,6 +2,35 @@
 @import '../../styles/variables'; 
 @import '../../styles/mixins'; 
 
+.create-board-section {
+    @include card-style($shadow: $box-shadow-sm, $bg: $surface-color, $radius: $border-radius-md);
+    max-width: 500px; 
+    margin: $spacing-xl auto; 
+    padding: $spacing-lg; 
+    text-align: center;
+
+    h2 {
+        margin-bottom: $spacing-md;
+        color: $text-color;
+    }
+
+    .form-group {
+        display: flex;
+        gap: $spacing-sm; 
+        margin-bottom: 0; 
+
+        input {
+            flex-grow: 1; 
+        }
+
+        button {
+            @include button-style($primary-color);
+            white-space: nowrap; 
+        }
+    }
+}
+
+
 section {
   margin-top: $spacing-xl;
 

@@ -1,8 +1,8 @@
 /* Estilos Globais da Aplicação */
 
 // 1. Importar variáveis e mixins
-@import 'styles/variables';
-@import 'styles/mixins';
+@import './styles/variables';
+@import './styles/mixins';
 
 // 2. Reset Básico (opcional, mas recomendado)
 * {

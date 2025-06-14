@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt-strategy'; // Importe JwtStrategy
     TypeOrmModule.forFeature([User]), // <<--- ESTA LINHA É CRUCIAL E PROVAVELMENTE ESTÁ FALTANDO OU INCORRETA
     PassportModule,
     JwtModule.register({
-      secret: 'SEGREDO_MUITO_SECRETO_E_FORTE', // Sua chave secreta aqui
+      secret: 'LUVAS', // Sua chave secreta aqui
       signOptions: { expiresIn: '1h' },
     }),
   ],

@@ -1,0 +1,77 @@
+<div class="board-detail-container">
+  <div class="board-header">
+    <a [routerLink]="['/boards']" class="back-link">
+      <i class="fas fa-arrow-left"></i> Voltar para Boards
+    </a>
+    <h1>{{ boardTitle }}</h1>
+    </div>
+
+  <div class="columns-container" cdkDropListGroup>
+    <div class="column" *ngFor="let column of columns">
+      <div class="column-header">
+        <h3>{{ column.title }}</h3>
+        <span class="column-card-count">{{ column.cards ? column.cards.length : 0 }}</span>
+      </div>
+      <div
+        class="cards-list"
+        cdkDropList
+        [cdkDropListData]="column.cards"
+        [id]="column.id.toString()"
+        (cdkDropListDropped)="drop($event)"
+      >
+        <div class="card" *ngFor="let card of column.cards" cdkDrag>
+          <h4>{{ card.title }}</h4>
+          <p *ngIf="card.description">{{ card.description }}</p>
+          <div class="cdk-drag-placeholder" *cdkDragPlaceholder></div>
+        </div>
+      </div>
+
+      <div class="add-card-container">
+        <button
+          class="add-card-button"
+          *ngIf="showAddCardFormForColumnId !== column.id; else addCardForm"
+          (click)="toggleAddCardForm(column.id)"
+        >
+          + Adicionar um cartão
+        </button>
+
+        <ng-template #addCardForm>
+          <div class="add-card-form">
+            <textarea
+              placeholder="Inserir título do cartão"
+              [(ngModel)]="newCardTitle"
+              (keyup.enter)="createCard(column)"
+            ></textarea>
+            <textarea
+              placeholder="Descrição (opcional)"
+              [(ngModel)]="newCardDescription"
+            ></textarea>
+            <div class="form-actions">
+              <button class="add-button" (click)="createCard(column)">Adicionar cartão</button>
+              <button class="cancel-button" (click)="toggleAddCardForm(column.id)">X</button>
+            </div>
+          </div>
+        </ng-template>
+        </div>
+    </div>
+
+    <div class="add-column-placeholder" *ngIf="!showAddColumnForm; else addColumnForm" (click)="toggleAddColumnForm()">
+      + Adicionar outra lista
+    </div>
+
+    <ng-template #addColumnForm>
+      <div class="add-column-form">
+        <input
+          type="text"
+          placeholder="Inserir título da lista"
+          [(ngModel)]="newColumnTitle"
+          (keyup.enter)="createColumn()"
+        />
+        <div class="form-actions">
+          <button class="add-button" (click)="createColumn()">Adicionar lista</button>
+          <button class="cancel-button" (click)="toggleAddColumnForm()">X</button>
+        </div>
+      </div>
+    </ng-template>
+    </div>
+</div>

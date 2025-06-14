@@ -8,14 +8,14 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
-  UseGuards,
 } from '@nestjs/common';
 import { ColumnService } from './column.service';
 import { CreateColumnDto } from './dto/create-column.dto';
 import { UpdateColumnDto } from './dto/update-column.dto';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
+// import { UseGuards } from '@nestjs/common';
 
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @Controller('column')
 export class ColumnController {
   constructor(private readonly columnService: ColumnService) {}
