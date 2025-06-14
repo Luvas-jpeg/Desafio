@@ -1,0 +1,56 @@
+
+@import '../../styles/variables';
+@import '../../styles/mixins'; 
+
+.register-container {
+  max-width: 400px;
+  margin: $spacing-xl auto; 
+  @include card-style($shadow: $box-shadow-md); 
+  text-align: center;
+
+  h2 {
+    color: $text-color;
+    margin-bottom: $spacing-lg;
+  }
+
+
+  .password-input-container {
+    position: relative;
+    display: flex;
+
+    input {
+      flex-grow: 1;
+      padding-right: 90px;
+    }
+
+    .toggle-password-button {
+      @include button-style($secondary-color, $text-color: white, $hover-bg: darken($secondary-color, 10%));
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      padding: 0 $spacing-sm;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
+  button[type="submit"] {
+    @include button-style($success-color, $hover-bg: darken($success-color, 10%));
+    margin-top: $spacing-md;
+  }
+  
+
+  p {
+    margin-top: $spacing-md;
+    font-size: 0.9rem;
+    a {
+      color: $primary-color;
+      cursor: pointer;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

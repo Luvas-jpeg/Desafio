@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const board_service_1 = require("./board.service");
 const create_board_dto_1 = require("./dto/create-board.dto");
 const update_board_dto_1 = require("./dto/update-board.dto");
+const passport_1 = require("@nestjs/passport");
 let BoardController = class BoardController {
     boardService;
     constructor(boardService) {
@@ -77,6 +78,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], BoardController.prototype, "remove", null);
 exports.BoardController = BoardController = __decorate([
+    (0, common_1.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Controller)('board'),
     __metadata("design:paramtypes", [board_service_1.BoardService])
 ], BoardController);

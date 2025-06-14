@@ -1,1 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos Globais da Aplicação */
+
+// 1. Importar variáveis e mixins
+@import 'styles/variables';
+@import 'styles/mixins';
+
+// 2. Reset Básico (opcional, mas recomendado)
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// 3. Estilos do Body e Tipografia Base
+body {
+  font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  line-height: 1.5;
+  background-color: $background-color; // Usando variável
+  color: $text-color; // Usando variável
+}
+
+// 4. Estilos para links (gerais)
+a {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// 5. Estilos para Main (container principal do AppComponent)
+main {
+  padding: $spacing-md;
+  text-align: center;
+}
+
+// 6. Estilos para formulários (gerais)
+.form-group {
+  margin-bottom: $spacing-md;
+  text-align: left;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-xs;
+    font-weight: bold;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: $spacing-sm;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-sm;
+    font-size: 1rem;
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+    }
+  }
+}
+
+.error-message {
+  color: $danger-color;
+  font-size: 0.9em;
+  margin-top: -$spacing-xs;
+  margin-bottom: $spacing-md;
+}
+.success-message {
+  color: $success-color;
+  font-size: 0.9em;
+  margin-top: -$spacing-xs;
+  margin-bottom: $spacing-md;
+}

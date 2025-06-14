@@ -1,0 +1,48 @@
+
+@import '../../styles/variables'; 
+@import '../../styles/mixins'; 
+
+section {
+  margin-top: $spacing-xl;
+
+  h2 {
+    color: $text-color;
+    margin-bottom: $spacing-md;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    display: flex; 
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $spacing-md; 
+  
+
+  li {
+    @include card-style($shadow: $box-shadow-sm, $radius: $border-radius-md);
+    min-width: 250px;
+    text-align: left;
+    margin-bottom: $spacing-md;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-2px); 
+    
+
+    a {
+      display: block; 
+      padding: $spacing-sm;
+      color: $text-color;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+
+  p {
+    color: $text-light-color;
+    margin-top: $spacing-md;
+        }
+    }
+  }
+}

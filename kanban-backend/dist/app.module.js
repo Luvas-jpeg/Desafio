@@ -14,9 +14,7 @@ const app_service_1 = require("./app.service");
 const board_entity_1 = require("./entities/board.entity");
 const column_entity_1 = require("./entities/column.entity");
 const card_entity_1 = require("./entities/card.entity");
-const board_module_1 = require("./board/board.module");
-const column_module_1 = require("./column/column.module");
-const card_module_1 = require("./card/card.module");
+const user_entity_1 = require("./entities/user.entity");
 const auth_module_1 = require("./auth/auth.module");
 let AppModule = class AppModule {
 };
@@ -27,12 +25,9 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'sqlite',
                 database: 'db.sqlite',
-                entities: [board_entity_1.Board, column_entity_1.ColumnEntity, card_entity_1.Card],
+                entities: [board_entity_1.Board, column_entity_1.ColumnEntity, card_entity_1.Card, user_entity_1.User],
                 synchronize: true,
             }),
-            board_module_1.BoardModule,
-            column_module_1.ColumnModule,
-            card_module_1.CardModule,
             auth_module_1.AuthModule,
         ],
         controllers: [app_controller_1.AppController],
