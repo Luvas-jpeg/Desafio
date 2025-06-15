@@ -12,7 +12,7 @@ import { switchMap, tap, catchError } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'; // <<--- VERIFIQUE ESTES IMPORTS DO NG-BOOTSTRAP
+import { NgbModal, NgbPopoverModule, NgbModalModule } from '@ng-bootstrap/ng-bootstrap'; 
 
 @Component({
   selector: 'app-board-detail',
@@ -22,7 +22,8 @@ import { NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap'; // <<--
     RouterModule,
     FormsModule,
     DragDropModule,
-    NgbPopoverModule, // <<--- ESTE MÓDULO (do ng-bootstrap)
+    NgbPopoverModule,
+    NgbModalModule
   ],
   templateUrl: './board-detail.html',
   styleUrl: './board-detail.scss'
@@ -53,7 +54,6 @@ export class BoardDetailComponent implements OnInit {
   editedCardTitle: string = '';
   editedCardDescription: string = '';
 
-  // Propriedade para o popover de ações do cartão
   showCardActionsPopoverForCardId: number | null = null;
 
 
@@ -119,7 +119,7 @@ export class BoardDetailComponent implements OnInit {
         return of(null);
       })
     ).pipe(
-      tap(() => this.loadMembers()) // Chamada para carregar membros após carregar colunas/cartões
+      tap(() => this.loadMembers())
     );
   }
 
@@ -165,7 +165,7 @@ export class BoardDetailComponent implements OnInit {
     console.log('DEBUG: column.id', column.id);
     if (this.newCardTitle.trim() && column.id) {
       const newOrder = column.cards && column.cards.length > 0 ?
-                       Math.max(...column.cards.map(c => c.order || 0)) + 1 : 1;
+                               Math.max(...column.cards.map(c => c.order || 0)) + 1 : 1;
 
       this.kanbanApi.createCard(column.id, this.newCardTitle, this.newCardDescription, newOrder).subscribe({
         next: (newCard) => {
@@ -256,18 +256,14 @@ export class BoardDetailComponent implements OnInit {
     this.newMemberEmail = '';
     this.memberInviteError = null;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'md' });
-    this.loadMembers(); // Recarrega membros ao abrir o modal
+    this.loadMembers();
   }
-
-  // closeMembersModal não é mais necessário, NgbModal.dismiss/close cuida disso
 
   openEditColumnModal(column: Column, content: any): void {
     this.editingColumn = { ...column };
     this.editedColumnTitle = column.title;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title-column', size: 'sm' });
   }
-
-  // closeEditColumnModal não é mais necessário
 
   saveEditedColumn(): void {
     if (this.editingColumn && this.editedColumnTitle.trim()) {
@@ -305,15 +301,12 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  // Métodos para o modal de edição de cartão (agora único para visualizar e editar)
   openEditCardModal(card: Card, content: any): void {
     this.editingCard = { ...card };
     this.editedCardTitle = card.title;
     this.editedCardDescription = card.description || '';
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title-card', size: 'lg' });
   }
-
-  // closeEditCardModal não é mais necessário
 
   saveEditedCard(): void {
     if (this.editingCard && this.editedCardTitle.trim()) {
@@ -354,14 +347,12 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  // Método para fechar qualquer popover/modal aberto (usado para ações do card)
   closeAnyOpenPopovers(): void {
     this.showCardActionsPopoverForCardId = null;
-    // O NgbModal.dismissAll() já fecharia modais, mas este é para o popover
   }
 
   toggleCardActionsPopover(cardId: number, event: MouseEvent): void {
-    event.stopPropagation(); // Impede que o clique no ícone do popover abra o modal de edição do card
+    event.stopPropagation();
     this.showCardActionsPopoverForCardId = (this.showCardActionsPopoverForCardId === cardId) ? null : cardId;
   }
   inviteMember(): void {
@@ -388,8 +379,8 @@ export class BoardDetailComponent implements OnInit {
       this.kanbanApi.removeBoardMember(this.boardId, userId).subscribe({
         next: () => {
           console.log('Membro removido com sucesso!');
-          this.loadMembers(); // Recarrega a lista de membros
-          alert('Membro removido com sucesso!'); // Feedback visual
+          this.loadMembers();
+          alert('Membro removido com sucesso!');
         },
         error: (err) => {
           console.error('Erro ao remover membro:', err);

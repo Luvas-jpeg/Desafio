@@ -1,81 +1,98 @@
-/* Estilos Globais da Aplicação */
+/* src/styles.scss */
 
-// 0. Importar Bootstrap (NO TOPO, antes dos seus estilos, para que você possa sobrescrevê-lo)
-@import 'bootstrap/scss/bootstrap';
-@import 'bootstrap-icons/font/bootstrap-icons';
-
-// 1. Importar suas variáveis e mixins
-@import './styles/variables';
+// Importa seus mixins e variáveis SCSS (caminhos relativos ao styles.scss)
 @import './styles/mixins';
+@import './styles/variables';
 
-// 2. Reset Básico
-* {
+// Define variáveis CSS globais que mapeiam suas variáveis SCSS
+:root {
+  --primary-color: #{$primary-color};
+  --primary-dark: #{$primary-dark};
+  --secondary-color: #{$secondary-color};
+  --tertiary-color: #{$tertiary-color};
+
+  --success-color: #{$success-color};
+  --danger-color: #{$danger-color};
+  --warning-color: #{$warning-color};
+  --info-color: #{$info-color};
+  --info-color-light: #{lighten($info-color, 30%)};
+  --info-color-dark: #{darken($info-color, 20%)};
+
+  --background-color: #{$background-color};
+  --surface-color: #{$surface-color};
+  --border-color: #{$border-color};
+  --text-color: #{$text-color};
+  --text-light-color: #{$text-light-color};
+
+  --spacing-xs: #{$spacing-xs};
+  --spacing-sm: #{$spacing-sm};
+  --spacing-md: #{$spacing-md};
+  --spacing-lg: #{$spacing-lg};
+  --spacing-xl: #{$spacing-xl};
+
+  --border-radius-sm: #{$border-radius-sm};
+  --border-radius-md: #{$border-radius-md};
+  --box-shadow-sm: #{$box-shadow-sm};
+  --box-shadow-md: #{$box-shadow-md};
+}
+
+/* Estilos globais para o layout da aplicação (sticky footer) */
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  overflow-x: hidden;
+  background-color: var(--background-color);
 }
 
-// 3. Estilos do Body e Tipografia Base
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  line-height: 1.5;
-  background-color: $background-color;
-  color: $text-color;
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-// 4. Estilos para links (gerais)
-a {
-  color: $primary-color;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-// 5. Estilos para Main (container principal do AppComponent)
-main {
-  padding: $spacing-md;
-  text-align: center;
-}
-
-// 6. Estilos para formulários (gerais)
-.form-group {
-  margin-bottom: $spacing-md;
-  text-align: left;
-
-  label {
-    display: block;
-    margin-bottom: $spacing-xs;
-    font-weight: bold;
+/* Estilos para a barra de navegação superior */
+.custom-navbar {
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white !important;
   }
 
-  input[type="text"],
-  input[type="email"],
-  input[type="password"],
-  textarea {
-    width: 100%;
-    padding: $spacing-sm;
-    border: 1px solid $border-color;
-    border-radius: $border-radius-sm;
-    font-size: 1rem;
-    &:focus {
-      border-color: $primary-color;
-      outline: none;
-      box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+  .nav-link {
+    font-size: 1.1rem;
+    margin-left: 1.5rem;
+    color: rgba(255, 255, 255, 0.8) !important;
+
+    &:hover {
+      color: white !important;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    i {
+      vertical-align: middle;
     }
   }
 }
 
-.error-message {
-  color: $danger-color;
-  font-size: 0.9em;
-  margin-top: -$spacing-xs;
-  margin-bottom: $spacing-md;
+/* Estilos para o conteúdo principal */
+main.container {
+  flex-grow: 1;
+  padding-top: var(--spacing-xl);
+  padding-bottom: var(--spacing-xl);
 }
-.success-message {
-  color: $success-color;
-  font-size: 0.9em;
-  margin-top: -$spacing-xs;
-  margin-bottom: $spacing-md;
+
+/* Estilos para o rodapé */
+.app-footer {
+  width: 100%;
+  text-align: center;
+  padding: var(--spacing-md) 0;
+  color: var(--text-light-color);
+  background-color: var(--surface-color);
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
 }

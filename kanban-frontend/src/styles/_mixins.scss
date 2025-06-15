@@ -1,5 +1,4 @@
 // src/styles/_mixins.scss
-
 // Mixin para estilos de caixa (box-shadow, border-radius)
 @mixin card-style($shadow: $box-shadow-sm, $bg: $surface-color, $radius: $border-radius-md) {
   background-color: $bg;
