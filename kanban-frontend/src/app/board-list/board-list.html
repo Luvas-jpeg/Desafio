@@ -1,25 +1,39 @@
-<section class="create-board container my-4">
-  <h2 class="text-center mb-4">Criar Novo Quadro</h2>
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="input-group mb-3">
-        <input
-          type="text"
-          class="form-control form-control-lg custom-input-board"
-          placeholder="Título do novo quadro"
-          aria-label="Título do novo quadro"
-          [(ngModel)]="newBoardTitle"
-          name="newBoardTitle"
-          (keyup.enter)="createBoard()"
-        />
-        <button
-          class="btn btn-primary custom-btn-create"
-          type="button"
-          (click)="createBoard()"
-        >
-          <i class="bi bi-plus-circle-fill me-2"></i>Criar Quadro
-        </button>
-      </div>
+<section>
+    <h2>Meus Quadros:</h2>
+    <div *ngIf="boards.length === 0; else boardList">
+        <p>Nenhum quadro encontrado.Por favor crie um na tela inicial.</p>
     </div>
-  </div>
+
+    <ng-template #boardList>
+        <ul>
+            <li *ngFor="let board of boards">
+                <a [routerLink]="['/board', board.id]" class="board-link">
+                   {{board.title}} (ID: {{board.id}}) 
+                </a>
+                <div class="board-actions">
+                    <button class="edit-button" (click)="openEditBoardModal(board)">Editar</button>
+                    <button class="delete-button" (click)="deleteBoard(board.id)">Excluir</button>
+                </div>>
+            </li>
+        </ul>
+    </ng-template>
+    <div class="modal-bodt">
+        <div class="edit-board-modal-conten">
+            <div class="modal-header">
+                <h2>Editar quadro: {{editingBoard?.title}}</h2>
+                <button class="close-button" (click)="closeEditBoardModal()">Cancelar</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editedTitle">Título do Quadro:</label>
+                    <input type="text" id="editedTitle" [(ngModel)]="editedBoardTitle" required=""/>
+                </div>
+                <div class="modal=action">
+                    <button class="save-button" (click)="saveEditedBoard()">Salvar</button>
+                    <button class="cancel-button" (click)="closeEditBoardModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
