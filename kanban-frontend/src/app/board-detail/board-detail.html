@@ -23,7 +23,7 @@
               <li><a class="dropdown-item" (click)="openEditColumnModal(column, editColumnModalContent)">
                 <i class="fas fa-edit me-2"></i> Editar
               </a></li>
-              <li><a class="dropdown-item text-danger" (click)="deleteColumn(column.id)">
+              <li><a class="dropdown-item text-danger" (click)="deleteColumn(column.id, column.title)">
                 <i class="fas fa-trash-alt me-2"></i> Excluir
               </a></li>
             </ul>
@@ -37,11 +37,20 @@
           [id]="column.id.toString()"
           (cdkDropListDropped)="drop($event)"
         >
-          <div class="card card-item mb-2 shadow-sm" *ngFor="let card of column.cards" cdkDrag (click)="openEditCardModal(card, editCardModalContent)">
+          <div class="card card-item mb-2 shadow-sm"
+               *ngFor="let card of column.cards"
+               cdkDrag
+               (click)="openEditCardModal(card, editCardModalContent)">
             <div class="card-body">
               <h4 class="card-title-item mb-1">{{ card.title }}</h4>
               <p class="card-description-item text-muted" *ngIf="card.description">{{ card.description }}</p>
             </div>
+            <button
+              class="btn btn-sm btn-light card-delete-button"
+              (click)="deleteCard(card.id); $event.stopPropagation();"
+            >Deletar Card
+              <i class="fas fa-trash-alt"></i>
+            </button>
             <div class="cdk-drag-placeholder"></div>
           </div>
         </div>

@@ -51,8 +51,8 @@
   height: calc(100vh - 180px); /* Mantenha uma altura para o scroll horizontal funcionar no container */
   
   .column-wrapper {
-    flex-basis: 320px; /* Aumenta a largura padrão de cada coluna */
-    max-width: 320px; /* Garante que a largura máxima não exceda o flex-basis */
+    flex-basis: 350px; /* Aumenta a largura padrão de cada coluna */
+    max-width: 350px; /* Garante que a largura máxima não exceda o flex-basis */
     flex-grow: 0;
     flex-shrink: 0;
     height: auto; /* Permite que a altura se adapte ao conteúdo */
@@ -136,6 +136,30 @@
         &.cdk-drag-animating {
           transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
         }
+        .card-delete-button {
+        position: absolute;
+        top: var(--spacing-sm);    /* 8px do topo */
+        right: var(--spacing-sm);  /* 8px da direita */
+        padding: 0px 4px;          /* Padding pequeno para o botão */
+        font-size: 0.8rem;         /* Tamanho da fonte menor */
+        color: var(--text-light-color); /* Cor discreta */
+        background-color: rgba(var(--surface-color), 0.7); /* Fundo semi-transparente */
+        border-radius: var(--border-radius-sm); /* Bordas arredondadas */
+        border: none;
+        box-shadow: none;
+        opacity: 0;               /* Inicialmente invisível */
+        transition: opacity 0.2s ease-in-out; /* Transição suave */
+
+        &:hover {
+          color: var(--danger-color); /* Fica vermelho no hover */
+          background-color: var(--surface-color); /* Fundo sólido no hover */
+          box-shadow: var(--box-shadow-sm);
+        }
+      }
+
+      &:hover .card-delete-button {
+        opacity: 1;
+        }
       }
     }
 
@@ -169,8 +193,8 @@
 
   .add-column-placeholder {
     @include card-style($shadow: var(--box-shadow-sm), $bg: var(--background-color), $radius: var(--border-radius-md));
-    flex-basis: 320px; /* Largura do placeholder/formulário de adicionar coluna */
-    max-width: 320px;
+    flex-basis: 400px; /* Largura do placeholder/formulário de adicionar coluna */
+    max-width: 400px;
     flex-grow: 0;
     flex-shrink: 0;
     height: 100px;
@@ -192,8 +216,8 @@
 
   .add-column-form {
     @include card-style($shadow: var(--box-shadow-md), $bg: var(--surface-color), $radius: var(--border-radius-md));
-    flex-basis: 320px;
-    max-width: 320px;
+    flex-basis: 380px;
+    max-width: 380px;
     flex-grow: 0;
     flex-shrink: 0;
     height: auto;

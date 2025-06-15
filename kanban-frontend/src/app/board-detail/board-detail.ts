@@ -284,7 +284,7 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  deleteColumn(columnId: number): void {
+  deleteColumn(columnId: number, columnTilte: string): void {
     if (confirm('Tem certeza que deseja excluir esta coluna? Todos os cartões dentro dela serão removidos!')) {
       this.kanbanApi.removeColumn(columnId).subscribe({
         next: () => {
