@@ -1,77 +1,24 @@
+/* Seu arquivo SCSS (ex: src/styles.scss ou o SCSS do seu componente) */
 
-@import '../../styles/variables'; 
-@import '../../styles/mixins'; 
+// Estilos para o input de criação de quadro
+.custom-input-board {
+  border-color: #007bff; // Cor da borda padrão
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); // Sombra azul sutil
+  transition: all 0.3s ease-in-out; // Transição suave para efeitos
 
-.create-board-section {
-    @include card-style($shadow: $box-shadow-sm, $bg: $surface-color, $radius: $border-radius-md);
-    max-width: 500px; 
-    margin: $spacing-xl auto; 
-    padding: $spacing-lg; 
-    text-align: center;
-
-    h2 {
-        margin-bottom: $spacing-md;
-        color: $text-color;
-    }
-
-    .form-group {
-        display: flex;
-        gap: $spacing-sm; 
-        margin-bottom: 0; 
-
-        input {
-            flex-grow: 1; 
-        }
-
-        button {
-            @include button-style($primary-color);
-            white-space: nowrap; 
-        }
-    }
+  &:focus {
+    border-color: #0056b3; // Cor da borda ao focar
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.5); // Sombra mais forte ao focar
+  }
 }
 
+// Estilos para o botão de criação
+.custom-btn-create {
+  padding-left: 1.5rem; // Mais padding para o botão
+  padding-right: 1.5rem; // Mais padding para o botão
 
-section {
-  margin-top: $spacing-xl;
-
-  h2 {
-    color: $text-color;
-    margin-bottom: $spacing-md;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    display: flex; 
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: $spacing-md; 
-  
-
-  li {
-    @include card-style($shadow: $box-shadow-sm, $radius: $border-radius-md);
-    min-width: 250px;
-    text-align: left;
-    margin-bottom: $spacing-md;
-    transition: transform 0.2s ease;
-
-    &:hover {
-      transform: translateY(-2px); 
-    
-
-    a {
-      display: block; 
-      padding: $spacing-sm;
-      color: $text-color;
-      font-weight: bold;
-      text-decoration: none;
-    }
-  }
-
-  p {
-    color: $text-light-color;
-    margin-top: $spacing-md;
-        }
-    }
+  &:hover {
+    transform: translateY(-1px); // Pequeno movimento para cima no hover
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); // Sombra mais pronunciada
   }
 }

@@ -30,7 +30,7 @@
     }
 
     .members-button {
-      @include button-style($secondary-color); // <<--- CORREÇÃO AQUI: $secondary-color
+      @include button-style($secondary-color);
       margin-left: $spacing-md;
     }
   }
@@ -49,16 +49,29 @@
       display: flex;
       flex-direction: column;
       max-height: calc(100vh - 180px); // Limita a altura da coluna para scroll interno se necessário
+      position: relative; // Essencial para o posicionamento absoluto dos botões da coluna
+      padding-bottom: $spacing-xl; // Mais espaço no fundo da coluna para os botões
+
+      &:hover .column-actions { // Mostra os botões da coluna no hover
+          display: flex;
+      }
 
       .column-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        padding: $spacing-md; // Adicionado padding aqui
         padding-bottom: $spacing-sm;
         margin-bottom: $spacing-sm;
         border-bottom: 1px solid rgba($border-color, 0.5);
+        gap: $spacing-sm;
 
         h3 {
+          flex-grow: 1;
+          flex-shrink: 1;
+          min-width: 0;
+          word-break: break-word;
+          overflow-wrap: break-word;
           font-size: 1.1rem;
           font-weight: bold;
           color: $text-color;
@@ -66,24 +79,31 @@
         }
 
         .column-card-count {
+          flex-shrink: 0;
           background-color: rgba($text-light-color, 0.1);
           border-radius: $border-radius-sm;
           padding: 2px $spacing-sm;
           font-size: 0.8rem;
           color: $text-light-color;
+          margin-left: auto;
         }
       }
 
       .cards-list {
-        flex-grow: 1; // Permite que a lista de cartões ocupe o espaço
-        overflow-y: auto; // Permite scroll vertical se houver muitos cartões
-        padding-right: $spacing-xs; // Evita que a barra de rolagem corte o conteúdo
+        flex-grow: 1;
+        overflow-y: auto;
+        padding-right: $spacing-xs;
 
         .card {
           @include card-style($shadow: $box-shadow-sm, $bg: $surface-color, $radius: $border-radius-sm);
           margin-bottom: $spacing-sm;
-          cursor: grab; // Indica que o card pode ser arrastado
+          cursor: grab;
           transition: background-color 0.2s ease;
+          position: relative;
+
+          padding: $spacing-md;
+          padding-right: 75px; // Mais espaço à direita para os botões
+          padding-bottom: 40px; // Espaço inferior para os botões
 
           &:hover {
             background-color: lighten($surface-color, 2%);
@@ -94,12 +114,44 @@
             font-weight: 500;
             margin-bottom: $spacing-xs;
             color: $text-color;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            max-width: calc(100% - 60px); // Limita a largura do texto para evitar sobreposição
+            text-align: center; // Centraliza o título
           }
           p {
             font-size: 0.8rem;
             color: $text-light-color;
             line-height: 1.3;
-            margin-bottom: 0;
+            margin-bottom: $spacing-sm;
+            max-width: calc(100% - 60px); // Limita a largura do texto para evitar sobreposição
+            word-break: break-word;
+            overflow-wrap: break-word;
+            text-align: center; // Centraliza a descrição
+          }
+
+          // Card actions popover trigger and content (para ngbPopover)
+          .card-actions-ngb-popover-trigger { // Nova classe para o trigger do ngbPopover
+            position: absolute;
+            top: $spacing-xs; // Posição para o ícone de três pontos (canto superior direito)
+            right: $spacing-xs;
+            cursor: pointer;
+            color: $text-light-color;
+            font-size: 0.8rem;
+            padding: $spacing-xs;
+            border-radius: $border-radius-sm;
+            transition: background-color 0.2s ease;
+            z-index: 2; // Para aparecer acima de outros elementos do card
+
+            &:hover {
+              background-color: rgba($text-light-color, 0.1);
+              color: $text-color;
+            }
+          }
+
+          // Ocultar o trigger no card original quando ele está sendo arrastado
+          &.cdk-drag-dragging .card-actions-ngb-popover-trigger {
+            display: none !important;
           }
         }
       }
@@ -162,10 +214,10 @@
             }
 
             .cancel-button {
-              background: none; // <<--- CORREÇÃO AQUI: 'none' em vez de 'none;' (sem color)
+              background: none;
               border: none;
               color: $text-light-color;
-              font-size: 1.5rem; // <<--- CORREÇÃO AQUI: 1.5rem (ponto)
+              font-size: 1.5rem;
               cursor: pointer;
               line-height: 1;
               &:hover {
@@ -230,7 +282,7 @@
           background: none;
           border: none;
           color: $text-light-color;
-          font-size: 1.5rem; // <<--- CORREÇÃO AQUI: 1.5rem (ponto)
+          font-size: 1.5rem;
           cursor: pointer;
           line-height: 1;
           &:hover {
@@ -253,6 +305,10 @@
   color: $text-color;
   font-weight: bold;
   padding: $spacing-sm;
+
+  .card-actions { /* Oculta ações no preview */
+    display: none !important;
+  }
 }
 
 .cdk-drag-placeholder {

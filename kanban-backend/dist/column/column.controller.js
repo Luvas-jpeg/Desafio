@@ -17,8 +17,6 @@ const common_1 = require("@nestjs/common");
 const column_service_1 = require("./column.service");
 const create_column_dto_1 = require("./dto/create-column.dto");
 const update_column_dto_1 = require("./dto/update-column.dto");
-const passport_1 = require("@nestjs/passport");
-const common_2 = require("@nestjs/common");
 let ColumnController = class ColumnController {
     columnService;
     constructor(columnService) {
@@ -89,7 +87,6 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], ColumnController.prototype, "findColumnByBoard", null);
 exports.ColumnController = ColumnController = __decorate([
-    (0, common_2.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Controller)('column'),
     __metadata("design:paramtypes", [column_service_1.ColumnService])
 ], ColumnController);

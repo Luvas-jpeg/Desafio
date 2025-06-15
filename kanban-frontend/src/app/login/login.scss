@@ -1,53 +1,23 @@
+// src/app/login/login.component.scss
+@import '../../styles/variables'; // Mantenha suas variáveis
 
-@import '../../styles/variables'; 
-@import '../../styles/mixins';   
+// A maioria dos estilos será tratada pelas classes Bootstrap no HTML.
+// Aqui você pode adicionar overrides específicos se o Bootstrap não atender.
 
-.login-container {
-  max-width: 400px;
-  margin: $spacing-xl auto;
-  @include card-style($shadow: $box-shadow-md);
-  text-align: center;
+// Apenas para centralizar o container principal, se o Bootstrap não for suficiente
+.vh-100 {
+    min-height: 100vh;
+}
+.card {
+    // Você pode ajustar sombras ou bordas se quiser algo diferente do Bootstrap padrão
+    // box-shadow: $box-shadow-md;
+}
 
-  h2 {
-    color: $text-color;
-    margin-bottom: $spacing-lg;
-  }
-
-  .password-input-container {
-    position: relative; 
-    display: flex; 
-
-    input {
-      flex-grow: 1; 
-      padding-right: 90px; 
+// Ajustes para o input de senha
+.input-group .btn-outline-secondary {
+    // Bootstrap já estiliza bem, mas se precisar de cor de fonte específica
+    color: $primary-color;
+    &:hover {
+        color: white; // Cor do texto no hover
     }
-
-    .toggle-password-button {
-      @include button-style($secondary-color, $text-color: white, $hover-bg: darken($secondary-color, 10%));
-      position: absolute; 
-      right: 0;
-      top: 0;
-      height: 100%; 
-      padding: 0 $spacing-sm; 
-      border-bottom-left-radius: 0;
-    }
-  }
-
-  button[type="submit"] {
-    @include button-style($primary-color);
-    margin-top: $spacing-md; 
-  }
-
-  p {
-    margin-top: $spacing-md;
-    font-size: 0.9rem;
-    a {
-      color: $primary-color;
-      cursor: pointer;
-      text-decoration: none;
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
 }

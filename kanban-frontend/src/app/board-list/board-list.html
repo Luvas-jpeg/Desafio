@@ -1,27 +1,25 @@
-<section class="create-board">
-    <h2>Criar Novo Quadro</h2>
-    <div class="form-group">
+<section class="create-board container my-4">
+  <h2 class="text-center mb-4">Criar Novo Quadro</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="input-group mb-3">
         <input
-        type="text"
-        placeholder="Título do novo quadro"
-        [(ngModel)]="newBoardTitle"
-        (keyup.enter)="createBoard()"/>
+          type="text"
+          class="form-control form-control-lg custom-input-board"
+          placeholder="Título do novo quadro"
+          aria-label="Título do novo quadro"
+          [(ngModel)]="newBoardTitle"
+          name="newBoardTitle"
+          (keyup.enter)="createBoard()"
+        />
+        <button
+          class="btn btn-primary custom-btn-create"
+          type="button"
+          (click)="createBoard()"
+        >
+          <i class="bi bi-plus-circle-fill me-2"></i>Criar Quadro
+        </button>
+      </div>
     </div>
-</section>
-
-<section>
-    <h2>Meus Quadros:</h2>
-    <div *ngIf="boards.length === 0; else boardList">
-        <p>Nenhum quadro encontrado.Por favor crie um na tela inicial.</p>
-    </div>
-
-    <ng-template #boardList>
-        <ul>
-            <li *ngFor="let board of boards">
-                <a [routerLink]="['/board', board.id]">
-                   {{board.title}} (ID: {{board.id}}) 
-                </a>
-            </li>
-        </ul>
-    </ng-template>
+  </div>
 </section>

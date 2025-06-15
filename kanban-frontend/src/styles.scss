@@ -1,10 +1,14 @@
 /* Estilos Globais da Aplicação */
 
-// 1. Importar variáveis e mixins
+// 0. Importar Bootstrap (NO TOPO, antes dos seus estilos, para que você possa sobrescrevê-lo)
+@import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons';
+
+// 1. Importar suas variáveis e mixins
 @import './styles/variables';
 @import './styles/mixins';
 
-// 2. Reset Básico (opcional, mas recomendado)
+// 2. Reset Básico
 * {
   margin: 0;
   padding: 0;
@@ -13,11 +17,11 @@
 
 // 3. Estilos do Body e Tipografia Base
 body {
-  font-family: -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, Oxygen,
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   line-height: 1.5;
-  background-color: $background-color; // Usando variável
-  color: $text-color; // Usando variável
+  background-color: $background-color;
+  color: $text-color;
 }
 
 // 4. Estilos para links (gerais)
@@ -48,7 +52,8 @@ main {
 
   input[type="text"],
   input[type="email"],
-  input[type="password"] {
+  input[type="password"],
+  textarea {
     width: 100%;
     padding: $spacing-sm;
     border: 1px solid $border-color;

@@ -3,10 +3,10 @@ import { Controller, Get, Post, Body, Param, Delete, HttpCode, HttpStatus, Valid
 import { BoardMembersService } from './board-members.service';
 import { AddMemberDto } from './dto/add-member.dto';
 import { User } from '../entities/user.entity';
-import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+// import { UseGuards } from '@nestjs/common';
+// import { AuthGuard } from '@nestjs/passport';
 
-@UseGuards(AuthGuard('jwt'))
+// @UseGuards(AuthGuard('jwt'))
 @Controller('board/:boardId/members')
 export class BoardMembersController {
   constructor(private readonly boardMembersService: BoardMembersService) {}

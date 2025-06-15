@@ -5,7 +5,10 @@ import { RouterOutlet, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { HttpClientModule } from '@angular/common/http'; // <<--- ADICIONE ESTA LINHA NOVAMENTE
+import { HttpClientModule } from '@angular/common/http';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NotificationComponent } from "./notification-component/notification-component";
+
 
 @Component({
   selector: 'app-root',
@@ -15,8 +18,9 @@ import { HttpClientModule } from '@angular/common/http'; // <<--- ADICIONE ESTA 
     RouterOutlet,
     FormsModule,
     RouterModule,
-    HttpClientModule // <<--- E ADICIONE AQUI NOVAMENTE
-  ],
+    HttpClientModule,
+    NotificationComponent
+],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

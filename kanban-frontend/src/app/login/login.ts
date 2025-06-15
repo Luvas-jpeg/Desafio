@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../notification';
 
 @Component({
   selector: 'app-login',
@@ -18,17 +19,19 @@ export class LoginComponent{
   errorMessage: string | null = null;
   showPassword = false;
 
-  constructor(private authService: AuthService,private router: Router) { }
+  constructor(private authService: AuthService,private router: Router,
+    private notificationService: NotificationService
+  ) { }
 
   onLogin(): void {
     this.errorMessage = null;
     this.authService.signIn({email: this.email, password: this.password}).subscribe({
       next: (response) => {
-        console.log('Login bem-sucedido!', response);
+        this.notificationService.success("Login bem-sucedido!")
         this.router.navigate(['/boards']);
       },
       error: (error) => {
-        console.error('Erro no login:', error);
+        this.notificationService.error("Erro ao realizar login!", error)
         this.errorMessage = error.error?.message || 'Credenciais invalidas'
       }
     });

@@ -4,14 +4,22 @@
       <i class="fas fa-arrow-left"></i> Voltar para Boards
     </a>
     <h1>{{ boardTitle }}</h1>
-    <button class="members-button" (click)="openMembersModal()">Membros</button>
+    <button class="members-button" (click)="openMembersModal(membersModalContent)"> <i class="fas fa-users"></i> Membros
+    </button>
   </div>
 
   <div class="columns-container" cdkDropListGroup>
     <div class="column" *ngFor="let column of columns">
       <div class="column-header">
         <h3>{{ column.title }}</h3>
-        <span class="column-card-count">{{ column.cards ? column.cards.length : 0 }}</span>
+        <span class="column-card-count">{{ column.cards ? column.cards.length : 0 }} </span>
+        <div class="column-actions">
+            <button class="edit-button" (click)="openEditColumnModal(column, editColumnModalContent)"> <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="delete-button" (click)="deleteColumn(column.id)">
+              <i class="fas fa-trash-alt"></i> Excluir
+            </button>
+        </div>
       </div>
       <div
         class="cards-list"
@@ -20,9 +28,18 @@
         [id]="column.id.toString()"
         (cdkDropListDropped)="drop($event)"
       >
-        <div class="card" *ngFor="let card of column.cards" cdkDrag>
-          <h4>{{ card.title }}</h4>
+        <div class="card" *ngFor="let card of column.cards" cdkDrag (click)="openEditCardModal(card, editCardModalContent)"> <h4>{{ card.title }}</h4>
           <p *ngIf="card.description">{{ card.description }}</p>
+          <div class="card-actions-popover-trigger" (click)="toggleCardActionsPopover(card.id, $event)">
+            <i class="fas fa-ellipsis-h"></i> <div class="card-actions-popover-content" *ngIf="showCardActionsPopoverForCardId === card.id">
+              <button class="edit-button" (click)="openEditCardModal(card, editCardModalContent); closeAnyOpenPopovers()">
+                <i class="fas fa-edit"></i> Editar
+              </button>
+              <button class="delete-button" (click)="deleteCard(card.id); closeAnyOpenPopovers()">
+                <i class="fas fa-trash-alt"></i> Excluir
+              </button>
+            </div>
+          </div>
           <div class="cdk-drag-placeholder" *cdkDragPlaceholder></div>
         </div>
       </div>
@@ -33,7 +50,7 @@
           *ngIf="showAddCardFormForColumnId !== column.id; else addCardForm"
           (click)="toggleAddCardForm(column.id)"
         >
-          + Adicionar um cartão
+          <i class="fas fa-plus"></i> Adicionar um cartão
         </button>
 
         <ng-template #addCardForm>
@@ -54,10 +71,19 @@
           </div>
         </ng-template>
       </div>
+
+      <div class="column-actions">
+          <button class="edit-button" (click)="openEditColumnModal(column, editColumnModalContent)">
+            <i class="fas fa-edit"></i> Editar
+          </button>
+          <button class="delete-button" (click)="deleteColumn(column.id)">
+            <i class="fas fa-trash-alt"></i> Excluir
+          </button>
+      </div>
     </div>
 
     <div class="add-column-placeholder" *ngIf="!showAddColumnForm; else addColumnForm" (click)="toggleAddColumnForm()">
-      + Adicionar outra lista
+      <i class="fas fa-plus"></i> Adicionar outra lista
     </div>
 
     <ng-template #addColumnForm>
@@ -75,35 +101,72 @@
       </div>
     </ng-template>
   </div>
-  <div class="members-modal-overlay" *ngIf="showMembersModal">
-    <div class="members-modal-content">
-      <div class="modal-header">
-        <h2>Membros do Board: {{ boardTitle }}</h2>
-        <button class="close-button" (click)="closeMembersModal()">X</button>
+
+  <ng-template #membersModalContent let-modal> <div class="modal-header">
+      <h2 class="modal-title">Membros do Board: {{ boardTitle }}</h2>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="modal-body">
+      <h3>Membros Atuais:</h3>
+      <ul class="member-list">
+        <li *ngFor="let member of boardMembers">
+          {{ member.email }} (ID: {{ member.id }})
+          <button type="button" *ngIf="member.id !== 1" class="remove-member-button btn btn-sm btn-danger" (click)="removeMember(member.id); modal.close('Member removed')">Remover</button>
+        </li>
+        <li *ngIf="boardMembers.length === 0">Nenhum membro ainda.</li>
+      </ul>
+
+      <h3>Convidar Novo Membro:</h3>
+      <div class="invite-form">
+        <input
+          type="email"
+          placeholder="Email do novo membro"
+          [(ngModel)]="newMemberEmail"
+          (keyup.enter)="inviteMember(); modal.close('Member invited')"
+        />
+        <button type="button" class="btn btn-primary" (click)="inviteMember(); modal.close('Member invited')">Convidar</button>
       </div>
+      <p *ngIf="memberInviteError" class="alert alert-danger mt-2">{{ memberInviteError }}</p>
+    </div>
+  </ng-template>
 
-      <div class="modal-body">
-        <h3>Membros Atuais:</h3>
-        <ul class="member-list">
-          <li *ngFor="let member of boardMembers">
-            {{ member.email }} (ID: {{ member.id }})
-            <button *ngIf="member.id !== 1" class="remove-member-button" (click)="removeMember(member.id)">Remover</button>
-          </li>
-          <li *ngIf="boardMembers.length === 0">Nenhum membro ainda.</li>
-        </ul>
+  <ng-template #editColumnModalContent let-modal> <div class="modal-header">
+      <h2 class="modal-title">Editar Coluna: {{ editingColumn?.title }}</h2>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
 
-        <h3>Convidar Novo Membro:</h3>
-        <div class="invite-form">
-          <input
-            type="email"
-            placeholder="Email do novo membro"
-            [(ngModel)]="newMemberEmail"
-            (keyup.enter)="inviteMember()"
-          />
-          <button (click)="inviteMember()">Convidar</button>
-        </div>
-        <p *ngIf="memberInviteError" class="error-message">{{ memberInviteError }}</p>
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="editedColumnTitle" class="form-label">Título da Coluna:</label>
+        <input type="text" id="editedColumnTitle" [(ngModel)]="editedColumnTitle" name="editedColumnTitle" class="form-control" required />
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-primary" (click)="saveEditedColumn(); modal.close('Save click')">Salvar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancelar</button>
       </div>
     </div>
-  </div>
-  </div>
+  </ng-template>
+
+  <ng-template #editCardModalContent let-modal> <div class="modal-header">
+      <h2 class="modal-title">Editar Cartão: {{ editingCard?.title }}</h2>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+
+    <div class="modal-body">
+      <div class="mb-3">
+        <label for="editedCardTitle" class="form-label">Título do Cartão:</label>
+        <input type="text" id="editedCardTitle" [(ngModel)]="editedCardTitle" name="editedCardTitle" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label for="editedCardDescription" class="form-label">Descrição:</label>
+        <textarea id="editedCardDescription" [(ngModel)]="editedCardDescription" name="editedCardDescription" class="form-control"></textarea>
+      </div>
+      <div class="d-flex justify-content-end gap-2">
+        <button type="button" class="btn btn-primary" (click)="saveEditedCard(); modal.close('Save click')">Salvar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+      </div>
+    </div>
+  </ng-template>
+
+</div>
