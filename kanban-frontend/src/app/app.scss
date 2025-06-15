@@ -1,6 +1,6 @@
 // src/app/app.component.scss
-@import '../../styles/variables'; // Mantenha suas variáveis
-@import '../../styles/mixins';    // Mantenha seus mixins
+@import '../styles/mixins'; // Mantenha suas variáveis
+@import '../styles/variables';    // Mantenha seus mixins
 
 :root { 
   --primary-color: #0d6efd;     
