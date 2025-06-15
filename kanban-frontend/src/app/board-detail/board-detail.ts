@@ -2,24 +2,25 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { KanbanApiService } from '../kanban-api';
+import { KanbanApiService } from '../kanban-api'; // <<--- VERIFICAR CAMINHO! (Deve ser .service)
 import { Board } from '../models/board.model';
 import { Column } from '../models/column.model';
 import { Card } from '../models/card.model';
+import { User } from '../models/user.model'; // Importe o modelo User
 import { Observable, forkJoin, of } from 'rxjs';
 import { switchMap, tap, catchError } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop'; 
+import { DragDropModule, CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-board-detail',
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule, DragDropModule],
-  templateUrl: './board-detail.html', 
-  styleUrl: './board-detail.scss' 
+  templateUrl: './board-detail.html', // <<--- VERIFICAR NOME DO ARQUIVO HTML
+  styleUrl: './board-detail.scss' // <<--- VERIFICAR NOME DO ARQUIVO SCSS
 })
-export class BoardDetailComponent implements OnInit { 
+export class BoardDetailComponent implements OnInit {
   boardId!: number;
   boardTitle: string = 'Carregando...';
   columns: Column[] = [];
@@ -31,13 +32,17 @@ export class BoardDetailComponent implements OnInit {
   newCardTitle: string = '';
   newCardDescription: string = '';
 
+  boardMembers: User[] = []; // Propriedade para membros
+  showMembersModal = false;
+  newMemberEmail: string = '';
+  memberInviteError: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private kanbanApi: KanbanApiService
   ) {}
 
-  ngOnInit(): void { 
-    // Obtém o ID do board da URL
+  ngOnInit(): void {
     this.route.paramMap.pipe(
       switchMap(params => {
         const idParam = params.get('id');
@@ -92,17 +97,20 @@ export class BoardDetailComponent implements OnInit {
         this.columns = [];
         return of(null);
       })
+    ).pipe( // Adicione este pipe aqui para chamar loadMembers após carregar colunas/cartões
+      tap(() => this.loadMembers())
     );
   }
 
-  toggleAddColumnForm(): void { 
+  toggleAddColumnForm(): void {
     this.showAddColumnForm = !this.showAddColumnForm;
     if (!this.showAddColumnForm) {
       this.newColumnTitle = '';
     }
   }
 
-  createColumn(): void { 
+  createColumn(): void {
+    console.log('DEBUG: Método createColumn chamado!');
     if (this.newColumnTitle.trim() && this.boardId) {
       const newOrder = this.columns.length > 0 ? Math.max(...this.columns.map(c => c.order || 0)) + 1 : 1;
 
@@ -123,17 +131,17 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  toggleAddCardForm(columnId: number): void { 
-    console.log('DEBUG: Método toggleAddCardForm chamando para coluna ID')
+  toggleAddCardForm(columnId: number): void {
+    console.log('DEBUG: Método toggleAddCardForm chamado para coluna ID:', columnId);
     this.showAddCardFormForColumnId = (this.showAddCardFormForColumnId === columnId) ? null : columnId;
     this.newCardTitle = '';
     this.newCardDescription = '';
   }
 
-  createCard(column: Column): void { 
-    console.log('DEBUG: Método createCard chamado!')
-    console.log('DEBUG: newCardTitle:', this.newCardTitle.trim())
-    console.log('DEBUG: column.id', column.id)
+  createCard(column: Column): void {
+    console.log('DEBUG: Método createCard chamado!');
+    console.log('DEBUG: newCardTitle:', this.newCardTitle.trim());
+    console.log('DEBUG: column.id', column.id);
     if (this.newCardTitle.trim() && column.id) {
       const newOrder = column.cards && column.cards.length > 0 ?
                        Math.max(...column.cards.map(c => c.order || 0)) + 1 : 1;
@@ -156,10 +164,7 @@ export class BoardDetailComponent implements OnInit {
     }
   }
 
-  
-  drop(event: CdkDragDrop<any>) { 
-    // O CdkDragDrop já deve inferir o tipo correto se os cdkDropListData forem Card[]
-    // O tratamento de undefined deve ser feito na inicialização do columns.cards
+  drop(event: CdkDragDrop<any>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -171,7 +176,6 @@ export class BoardDetailComponent implements OnInit {
       );
     }
 
-    // Lógica para atualizar o backend após o drop
     this.updateCardOrderAndColumn(event.container.data, event.container.id);
   }
 
@@ -208,6 +212,68 @@ export class BoardDetailComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro ao salvar as mudanças dos cartões:', err);
+        }
+      });
+    }
+  }
+
+  // <<--- NOVOS MÉTODOS PARA MEMBROS DO BOARD
+  loadMembers(): void {
+    if (this.boardId) {
+      this.kanbanApi.getBoardMembers(this.boardId).subscribe({
+        next: (members) => {
+          this.boardMembers = members;
+          console.log('DEBUG: Membros do board carregados:', this.boardMembers);
+        },
+        error: (err) => {
+          console.error('Erro ao carregar membros do board:', err);
+        }
+      });
+    }
+  }
+
+  openMembersModal(): void {
+    this.showMembersModal = true;
+    this.newMemberEmail = '';
+    this.memberInviteError = null;
+  }
+
+  closeMembersModal(): void {
+    this.showMembersModal = false;
+    this.newMemberEmail = '';
+    this.memberInviteError = null;
+  }
+
+  inviteMember(): void {
+    if (this.newMemberEmail.trim() && this.boardId) {
+      this.memberInviteError = null;
+      this.kanbanApi.addBoardMember(this.boardId, this.newMemberEmail).subscribe({
+        next: (updatedBoard) => {
+          console.log('Membro convidado com sucesso! Board atualizado:', updatedBoard);
+          this.newMemberEmail = '';
+          this.loadMembers();
+          alert('Membro convidado com sucesso!');
+        },
+        error: (err) => {
+          console.error('Erro ao convidar membro:', err);
+          this.memberInviteError = err.error?.message || 'Erro ao convidar membro. Verifique o email.';
+        }
+      });
+    } else {
+      this.memberInviteError = 'Por favor, insira um email válido.';
+    }
+  }
+
+  removeMember(userId: number): void {
+    if (confirm('Tem certeza que deseja remover este membro do board?')) {
+      this.kanbanApi.removeBoardMember(this.boardId, userId).subscribe({
+        next: () => {
+          console.log('Membro removido com sucesso!');
+          this.loadMembers();
+        },
+        error: (err) => {
+          console.error('Erro ao remover membro:', err);
+          alert('Erro ao remover membro. Verifique o console.');
         }
       });
     }

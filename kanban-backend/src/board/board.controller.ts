@@ -12,10 +12,10 @@ import {
 import { BoardService } from './board.service';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { UpdateBoardDto } from './dto/update-board.dto';
-// import { UseGuards } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}

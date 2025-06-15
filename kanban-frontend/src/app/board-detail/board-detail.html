@@ -4,7 +4,8 @@
       <i class="fas fa-arrow-left"></i> Voltar para Boards
     </a>
     <h1>{{ boardTitle }}</h1>
-    </div>
+    <button class="members-button" (click)="openMembersModal()">Membros</button>
+  </div>
 
   <div class="columns-container" cdkDropListGroup>
     <div class="column" *ngFor="let column of columns">
@@ -52,7 +53,7 @@
             </div>
           </div>
         </ng-template>
-        </div>
+      </div>
     </div>
 
     <div class="add-column-placeholder" *ngIf="!showAddColumnForm; else addColumnForm" (click)="toggleAddColumnForm()">
@@ -73,5 +74,36 @@
         </div>
       </div>
     </ng-template>
+  </div>
+  <div class="members-modal-overlay" *ngIf="showMembersModal">
+    <div class="members-modal-content">
+      <div class="modal-header">
+        <h2>Membros do Board: {{ boardTitle }}</h2>
+        <button class="close-button" (click)="closeMembersModal()">X</button>
+      </div>
+
+      <div class="modal-body">
+        <h3>Membros Atuais:</h3>
+        <ul class="member-list">
+          <li *ngFor="let member of boardMembers">
+            {{ member.email }} (ID: {{ member.id }})
+            <button *ngIf="member.id !== 1" class="remove-member-button" (click)="removeMember(member.id)">Remover</button>
+          </li>
+          <li *ngIf="boardMembers.length === 0">Nenhum membro ainda.</li>
+        </ul>
+
+        <h3>Convidar Novo Membro:</h3>
+        <div class="invite-form">
+          <input
+            type="email"
+            placeholder="Email do novo membro"
+            [(ngModel)]="newMemberEmail"
+            (keyup.enter)="inviteMember()"
+          />
+          <button (click)="inviteMember()">Convidar</button>
+        </div>
+        <p *ngIf="memberInviteError" class="error-message">{{ memberInviteError }}</p>
+      </div>
     </div>
-</div>
+  </div>
+  </div>

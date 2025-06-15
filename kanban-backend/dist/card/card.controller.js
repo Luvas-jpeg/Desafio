@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const card_service_1 = require("./card.service");
 const create_card_dto_1 = require("./dto/create-card.dto");
 const update_card_dto_1 = require("./dto/update-card.dto");
+const common_2 = require("@nestjs/common");
+const passport_1 = require("@nestjs/passport");
 let CardController = class CardController {
     cardService;
     constructor(cardService) {
@@ -87,6 +89,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], CardController.prototype, "findCardsByColumn", null);
 exports.CardController = CardController = __decorate([
+    (0, common_2.UseGuards)((0, passport_1.AuthGuard)('jwt')),
     (0, common_1.Controller)('card'),
     __metadata("design:paramtypes", [card_service_1.CardService])
 ], CardController);

@@ -19,6 +19,7 @@ const auth_module_1 = require("./auth/auth.module");
 const board_module_1 = require("./board/board.module");
 const column_module_1 = require("./column/column.module");
 const card_module_1 = require("./card/card.module");
+const board_members_module_1 = require("./board-members/board-members.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -35,6 +36,7 @@ exports.AppModule = AppModule = __decorate([
             board_module_1.BoardModule,
             column_module_1.ColumnModule,
             card_module_1.CardModule,
+            board_members_module_1.BoardMembersModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

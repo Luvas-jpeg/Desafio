@@ -1,10 +1,11 @@
 // src/app/app.ts (SEU ARQUIVO DO COMPONENTE RAIZ)
-import { Component, OnInit } from '@angular/core'; // Adicione OnInit
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, Router, RouterModule } from '@angular/router'; // Adicione Router e RouterModule
+import { RouterOutlet, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from './auth.service'; // Importe AuthService
-import { Observable } from 'rxjs'; // Importe Observable
+import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http'; // <<--- ADICIONE ESTA LINHA NOVAMENTE
 
 @Component({
   selector: 'app-root',
@@ -13,24 +14,23 @@ import { Observable } from 'rxjs'; // Importe Observable
     CommonModule,
     RouterOutlet,
     FormsModule,
-    RouterModule // Necessário para usar [routerLink]
+    RouterModule,
+    HttpClientModule // <<--- E ADICIONE AQUI NOVAMENTE
   ],
-  templateUrl: './app.html', // <<-- Certifique-se de que seu HTML se chama 'app.html'
-  styleUrl: './app.scss'   // <<-- Certifique-se de que seu SCSS se chama 'app.scss'
+  templateUrl: './app.html',
+  styleUrl: './app.scss'
 })
 export class AppComponent implements OnInit {
-  title = 'kanban-frontend'; // Título da sua aplicação (aparece na nav-bar)
-  isAuthenticated$!: Observable<boolean>; // Propriedade para observar o estado de autenticação
+  title = 'kanban-frontend';
+  isAuthenticated$!: Observable<boolean>;
 
-  constructor(private authService: AuthService, private router: Router) {} // Injeta AuthService e Router
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    // Ao iniciar o componente, subscreve-se ao estado de autenticação do AuthService
     this.isAuthenticated$ = this.authService.isAuthenticated();
   }
 
-  // Método chamado quando o botão "Sair" é clicado
   onLogout(): void {
-    this.authService.logout(); // Chama o método de logout do AuthService
+    this.authService.logout();
   }
 }

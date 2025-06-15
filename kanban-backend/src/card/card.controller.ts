@@ -13,10 +13,10 @@ import {
 import { CardService } from './card.service';
 import { CreateCardDto } from './dto/create-card.dto';
 import { UpdateCardDto } from './dto/update-card.dto';
-// import { UseGuards } from '@nestjs/common';
-// import { AuthGuard } from '@nestjs/passport';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 
-// @UseGuards(AuthGuard('jwt'))
+@UseGuards(AuthGuard('jwt'))
 @Controller('card') // Prefira 'cards' para ser mais RESTful
 export class CardController {
   constructor(private readonly cardService: CardService) {}

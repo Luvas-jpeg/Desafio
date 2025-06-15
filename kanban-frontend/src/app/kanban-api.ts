@@ -1,49 +1,42 @@
-// src/app/kanban-api.service.ts
+// src/app/kanban-api.service.ts (Versão fornecida por você)
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // HttpHeaders é importado
 import { Observable } from 'rxjs';
-import { Board } from './models/board.model';
-import { Column } from './models/column.model';
-import { Card } from './models/card.model';
+
+// Assuming your Board interface is defined
+interface Board {
+  // Define properties of a board
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class KanbanApiService {
-  private apiUrl = 'http://localhost:3000'; // URL base do backend NestJS
+  private apiUrl = 'http://localhost:3000'; // Ou seu URL base real da API
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient /*, private authService: AuthService */) { } // authService está comentado
 
-  // --- Métodos para Boards ---
   getBoards(): Observable<Board[]> {
-    return this.http.get<Board[]>(`${this.apiUrl}/board`);
+    // O código para obter o token e criar o cabeçalho 'Authorization' está COMENTADO
+    // const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+      // 'Authorization': `Bearer ${authToken}` // Exemplo para autenticação de token Bearer
+      // Add other headers if needed
+    });
+
+    return this.http.get<Board[]>(`${this.apiUrl}/board`, { headers });
   }
 
   createBoard(title: string): Observable<Board> {
-    return this.http.post<Board>(`${this.apiUrl}/board`, { title });
-  }
+      // O código para obter o token e criar o cabeçalho 'Authorization' também está COMENTADO
+    // const authToken = this.authService.getToken();
+    const headers = new HttpHeaders({
+      // 'Authorization': `Bearer ${authToken}` // Exemplo para autenticação de token Bearer
+      'Content-Type': 'application/json' // Exemplo para envio de dados JSON
+    });
 
-  // --- Métodos para Columns ---
-  // <<--- AS SEGUNTES LINHAS DEVEM SER PERFEITAS, SEM NENHUM CARACTERE ESTRANHO --->>
-  getColumnsByBoard(boardId: number): Observable<Column[]> {
-    return this.http.get<Column[]>(`${this.apiUrl}/column/board/${boardId}`);
-  }
+    const body = { title: title };
 
-  createColumn(boardId: number, title: string, order: number): Observable<Column> {
-    return this.http.post<Column>(`${this.apiUrl}/column`, { boardId, title, order });
-  }
-
-  // --- Métodos para Cards ---
-  // <<--- AS SEGUNTES LINHAS DEVEM SER PERFEITAS, SEM NENHUM CARACTERE ESTRANHO --->>
-  getCardsByColumn(columnId: number): Observable<Card[]> {
-    return this.http.get<Card[]>(`${this.apiUrl}/card/column/${columnId}`);
-  }
-
-  createCard(columnId: number, title: string, description: string, order: number): Observable<Card> {
-    return this.http.post<Card>(`${this.apiUrl}/card`, { columnId, title, description, order });
-  }
-
-  updateCard(id: number, data: Partial<Card>): Observable<Card> {
-    return this.http.patch<Card>(`${this.apiUrl}/card/${id}`, data)
+    return this.http.post<Board>(`${this.apiUrl}/board`, body, { headers });
   }
 }
