@@ -1,10 +1,9 @@
 /* src/styles.scss */
 
-// Importa seus mixins e variáveis SCSS (caminhos relativos ao styles.scss)
+
 @import './styles/mixins';
 @import './styles/variables';
 
-// Define variáveis CSS globais que mapeiam suas variáveis SCSS
 :root {
   --primary-color: #{$primary-color};
   --primary-dark: #{$primary-dark};
